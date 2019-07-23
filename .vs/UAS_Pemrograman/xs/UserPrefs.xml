@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{5FF3F626-288D-40EA-B435-7FDFF709F5E7}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="UAS_Pemrograman/Program.cs">
+    <Files>
+      <File FileName="UAS_Pemrograman/Program.cs" Line="287" Column="53" />
+      <File FileName="UAS_Pemrograman/models/Product.cs" Line="5" Column="41" />
+      <File FileName="UAS_Pemrograman/models/OrdersDetail.cs" Line="5" Column="26" />
+      <File FileName="UAS_Pemrograman/models/Orders.cs" Line="6" Column="45" />
+      <File FileName="UAS_Pemrograman/models/Ingredients.cs" Line="6" Column="43" />
+      <File FileName="UAS_Pemrograman/models/Dishes.cs" Line="1" Column="14" />
+      <File FileName="../tugas1/tugas1/Program.cs" Line="35" Column="77" />
+      <File FileName="../tugas1/tugas1/crud.cs" Line="1" Column="1" />
+      <File FileName="UAS_Pemrograman/Processes/ProductProcessing.cs" Line="36" Column="31" />
+      <File FileName="UAS_Pemrograman/Processes/OrdersExtendProcessing.cs" Line="63" Column="41" />
+      <File FileName="UAS_Pemrograman/Processes/OrdersProcessing.cs" Line="33" Column="13" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.UAS__Pemrograman PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

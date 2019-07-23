@@ -1,0 +1,6 @@
+/home/aspire/Projects/UAS_Pemrograman/UAS_Pemrograman/obj/x86/Debug/UAS_Pemrograman.csprojAssemblyReference.cache
+/home/aspire/Projects/UAS_Pemrograman/UAS_Pemrograman/obj/x86/Debug/UAS_Pemrograman.csproj.CoreCompileInputs.cache
+/home/aspire/Projects/UAS_Pemrograman/UAS_Pemrograman/bin/Debug/UAS_Pemrograman.exe
+/home/aspire/Projects/UAS_Pemrograman/UAS_Pemrograman/bin/Debug/UAS_Pemrograman.pdb
+/home/aspire/Projects/UAS_Pemrograman/UAS_Pemrograman/obj/x86/Debug/UAS_Pemrograman.exe
+/home/aspire/Projects/UAS_Pemrograman/UAS_Pemrograman/obj/x86/Debug/UAS_Pemrograman.pdb
