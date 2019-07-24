@@ -52,10 +52,11 @@ namespace UAS_Pemrograman{
 
             index = 0;
             var menuitem = new List<string>() {
-                "Create",
-                "Read",
-                "Update",
-                "Delete",
+                "Insert Data",
+                "Read Data",
+                "Select Data",
+                "Update Data",
+                "Delete Data",
                 "Back",
             };
 
@@ -64,61 +65,152 @@ namespace UAS_Pemrograman{
                 Console.CursorVisible = false;
                 if (selected == MenuAction.Create) {
                     Console.Clear();
-                    Console.CursorVisible = true;
-                    Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
+                    var temp = product.Read();
 
-                    dish = product.Read(id);
-                    if(dish != null) {
-                        Console.Write("Masukkan Customer: "); customer = Console.ReadLine();
+                    if(temp.Any()) {
+                        Console.WriteLine(product.Info());
+                        Console.WriteLine();
 
-                        order = new Orders() {
-                            Id = id,
-                            Customer = customer,
-                            CurrDate = DateTime.Now.ToString("dd/MM/yyyy"),
-                        };
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
 
                         dish = product.Read(id);
+                        if (dish != null) {
+                            Console.Write("Masukkan Customer: "); customer = Console.ReadLine();
+                            Console.Write("Masukkan Qty: "); orders.Model.Qty = Convert.ToInt32(Console.ReadLine());
 
-                        orders.Model.Product = dish;
-                        orders.Model.Orders = order;
+                            order = new Orders() {
+                                Id = id,
+                                Customer = customer,
+                                CurrDate = DateTime.Now.ToString("dd/MM/yyyy"),
+                            };
 
-                        orders.Create(order);
-                        increment++;
-                        orders.CreateDetail();
+                            orders.Model.Id = id;
+
+                            dish = product.Read(id);
+
+                            orders.Model.Product = dish;
+                            orders.Model.Orders = order;
+
+                            orders.Create(order);
+                            increment++;
+                            orders.CreateDetail();
+                        } else {
+                            Console.Write("Tidak dapat melakukan order");
+                            Console.ReadKey();
+                        }
                     } else {
-                        Console.Write("Tidak dapat melakukan order");
+                        Console.Write("Empty List");
                         Console.ReadKey();
                     }
 
                 } else if (selected == MenuAction.Read) {
                     Console.Clear();
-                    int i=0;
-                    foreach (OrdersDetail item in orders.ReadDetail().ToArray()) {
-                        Console.WriteLine("-----------------------------------");
-                        Console.WriteLine($"ID : {item.Product.Id}");
-                        Console.WriteLine($"Customer : {item.Orders.Customer}");
-                        Console.WriteLine($"Name : {item.Product.Name}");
-                        Console.WriteLine($"Price : {item.Product.Price}");
-                        Console.WriteLine($"Current Date : {item.Orders.CurrDate}");
-                        Console.WriteLine($"Qty : {item.Qty}");
-                        item.Amount = item.Qty;
-                        Console.WriteLine($"Amount : {orders.SubTotal(i)}");
-                        Console.WriteLine("-----------------------------------");
-                        i++;
+                    int i;
+                    var temp = orders.ReadDetail();
+                    if (temp.Any()) {
+                        foreach (OrdersDetail item in orders.ReadDetail().ToArray()) {
+                            Console.WriteLine("-----------------------------------");
+                            Console.WriteLine($"ID : {item.Id}");
+                            Console.WriteLine($"Customer : {item.Orders.Customer}");
+                            Console.WriteLine($"Name : {item.Product.Name}");
+                            Console.WriteLine($"Price : {item.Product.Price}");
+                            Console.WriteLine($"Current Date : {item.Orders.CurrDate}");
+                            Console.WriteLine($"Qty : {item.Qty}");
+                            item.Amount = item.Qty;
+                            i = item.Id;
+                            Console.WriteLine($"Amount : {orders.SubTotal(i)}");
+                            Console.WriteLine("-----------------------------------");
+                        }
+                    } else {
+                        Console.WriteLine("Empty List");
                     }
                     Console.ReadKey();
 
+                } else if (selected == MenuAction.Selected) {
+                    Console.Clear();
+                    var temp = orders.ReadDetail();
+                    if (temp.Any()) {
+                        int _id;
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); _id = Convert.ToInt32(Console.ReadLine());
+                        var select = orders.ReadDetail(_id);
+                        if (select == null) {
+                            Console.Write("Data not found");
+                        } else {
+                            Console.WriteLine("-----------------------------------");
+                            Console.WriteLine($"ID : {select.Product.Id}");
+                            Console.WriteLine($"Customer : {select.Orders.Customer}");
+                            Console.WriteLine($"Name : {select.Product.Name}");
+                            Console.WriteLine($"Price : {select.Product.Price}");
+                            Console.WriteLine($"Current Date : {select.Orders.CurrDate}");
+                            Console.WriteLine($"Qty : {select.Qty}");
+                            select.Amount = select.Qty;
+                            Console.WriteLine($"Amount : {orders.SubTotal(_id)}");
+                            Console.WriteLine("-----------------------------------");
+                        }
+                    } else {
+                        Console.WriteLine("Can't selected, its has been empty");
+                    }
+
+                    Console.ReadKey();
+
                 } else if (selected == MenuAction.Update) {
-                    orders.Update(0, order);
+                    Console.Clear();
+                    var temp = orders.ReadDetail();
+
+                    if (temp.Any()) {
+                        Console.WriteLine(product.Info());
+                        Console.WriteLine();
+
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
+
+                        dish = product.Read(id);
+                        if (dish != null) {
+                            Console.Write("Masukkan Customer: "); customer = Console.ReadLine();
+                            Console.Write("Masukkan Qty: "); orders.Model.Qty = Convert.ToInt32(Console.ReadLine());
+
+                            order = new Orders() {
+                                Id = id,
+                                Customer = customer,
+                                CurrDate = DateTime.Now.ToString("dd/MM/yyyy"),
+                            };
+
+                            dish = product.Read(id);
+
+                            orders.Model.Product = dish;
+                            orders.Model.Orders = order;
+
+                            orders.UpdateDetail(id);
+                        } else {
+                            Console.Write("Tidak dapat melakukan order");
+                            Console.ReadKey();
+                        }
+                    } else {
+                        Console.WriteLine("Can't Update, its has been empty");
+                        Console.ReadKey();
+                    }
 
                 } else if (selected == MenuAction.Delete) {
+                    Console.Clear();
                     Console.CursorVisible = true;
-                    Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
-                    orders.Delete(id);
+                    var temp = orders.ReadDetail();
+                    if (temp.Any()) {
+                        Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
+                        if(orders.Read(id) != null) {
+                            orders.Delete(id);
+                            Console.WriteLine("Remove success");
+                        } else {
+                            Console.WriteLine("Can't remove, data not found");
+                        }
+                    } else {
+                        Console.WriteLine("Can't removed, its has been empty");
+                    }
+                    Console.ReadKey();
 
                 } else if (selected == MenuAction.Back) {
                     index = 0;
-                    //orders.Dispose();
                     break;
                 }
             }
@@ -131,16 +223,18 @@ namespace UAS_Pemrograman{
 
             index = 0;
             var menuitem = new List<string>() {
-               "Create",
-               "Read",
-               "Update",
-               "Delete",
-               "Back",
+               "Insert Data",
+                "Read Data",
+                "Select Data",
+                "Update Data",
+                "Delete Data",
+                "Back",
             };
             while (true) {
                 var selected = MenuSelection(menuitem);
                 Console.CursorVisible = false;
                 if (selected == MenuAction.Create) {
+                    Console.Clear();
                     Console.CursorVisible = true;
                     Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
                     Console.Write("Masukkan Nama: "); name = Console.ReadLine();
@@ -156,40 +250,94 @@ namespace UAS_Pemrograman{
                     product.Create(dish);
 
                 } else if (selected == MenuAction.Read) {
-                    foreach (Dishes item in product.Read().ToArray()) {
-                        Console.WriteLine("-----------------------------------");
-                        Console.WriteLine($"ID : {item.Id}");
-                        Console.WriteLine($"Name : {item.Name}");
-                        Console.WriteLine($"Description : {item.Description}");
-                        Console.WriteLine($"Price : {item.Price}");
-                        Console.WriteLine("-----------------------------------");
+                    Console.Clear();
+                    var temp = product.Read();
+                    if (temp.Any()) {
+                        foreach (Dishes item in product.Read().ToArray()) {
+                            Console.WriteLine("-----------------------------------");
+                            Console.WriteLine($"ID : {item.Id}");
+                            Console.WriteLine($"Name : {item.Name}");
+                            Console.WriteLine($"Description : {item.Description}");
+                            Console.WriteLine($"Price : {item.Price}");
+                            Console.WriteLine("-----------------------------------");
+                        }
+                    } else {
+                        Console.WriteLine("Empty List");
                     }
+
+                    Console.ReadKey();
+
+                } else if (selected == MenuAction.Selected) {
+                    Console.Clear();
+                    var temp = product.Read();
+                    if (temp.Any()) {
+                        int _id;
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); _id = Convert.ToInt32(Console.ReadLine());
+                        var select = product.Read(_id);
+                        if (select == null) {
+                            Console.Write("Data not found");
+                        } else {
+                            Console.WriteLine("-----------------------------------");
+                            Console.WriteLine($"ID : {select.Id}");
+                            Console.WriteLine($"Name : {select.Name}");
+                            Console.WriteLine($"Description : {select.Description}");
+                            Console.WriteLine($"Price : {select.Price}");
+                            Console.WriteLine("-----------------------------------");
+                        }
+                    } else {
+                        Console.WriteLine("Can't selected, its has been empty");
+                    }
+
                     Console.ReadKey();
 
                 } else if (selected == MenuAction.Update) {
-                    Console.CursorVisible = true;
-                    Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
-                    Console.Write("Masukkan Nama: "); name = Console.ReadLine();
-                    Console.Write("Masukkan Harga: "); price = Convert.ToInt32(Console.ReadLine());
-                    Console.Write("Masukkan Deskripsi: "); desc = Console.ReadLine();
+                    Console.Clear();
+                    var temp = product.Read();
+                    if (temp.Any()) {
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
+                        if(product.Read(id) == null) {
+                            Console.WriteLine("Data not found");
+                            Console.ReadKey();
+                        } else {
+                            Console.Write("Masukkan Nama: "); name = Console.ReadLine();
+                            Console.Write("Masukkan Harga: "); price = Convert.ToInt32(Console.ReadLine());
+                            Console.Write("Masukkan Deskripsi: "); desc = Console.ReadLine();
 
-                    dish = new Dishes() {
-                        Id = id,
-                        Name = name,
-                        Description = desc,
-                        Price = price,
-                    };
+                            dish = new Dishes() {
+                                Id = id,
+                                Name = name,
+                                Description = desc,
+                                Price = price,
+                            };
 
-                    product.Update(id, dish);
+                            product.Update(id, dish);
+                        }
+                    } else {
+                        Console.WriteLine("Can't Update, its has been empty");
+                        Console.ReadKey();
+                    }
 
                 } else if (selected == MenuAction.Delete) {
-                    Console.CursorVisible = true;
-                    Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
-                    product.Delete(id);
+                    Console.Clear();
+                    var temp = product.Read();
+                    if (temp.Any()) {
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
+                        if(product.Read(id) != null) {
+                            product.Delete(id);
+                            Console.WriteLine("Remove success");
+                        } else {
+                            Console.WriteLine("Can't remove, data not found");
+                        }
+                    } else {
+                        Console.WriteLine("Can't removed, its has been empty");
+                    }
+                    Console.ReadKey();
 
                 } else if (selected == MenuAction.Back) {
                     index = 0;
-                    //product.Dispose();
                     break;
                 }
             }
@@ -201,11 +349,12 @@ namespace UAS_Pemrograman{
 
             index = 0;
             var menuitem = new List<string>() {
-               "Create",
-               "Read",
-               "Update",
-               "Delete",
-               "Back",
+               "Insert Data",
+                "Read Data",
+                "Select Data",
+                "Update Data",
+                "Delete Data",
+                "Back",
             };
             while (true) {
                 var selected = MenuSelection(menuitem);
@@ -228,42 +377,94 @@ namespace UAS_Pemrograman{
 
                 } else if (selected == MenuAction.Read) {
                     Console.Clear();
-                    foreach (Ingredients item in productraw.Read().ToArray()) {
-                        Console.WriteLine("-----------------------------------");
-                        Console.WriteLine($"ID : {item.Id}");
-                        Console.WriteLine($"Name : {item.Name}");
-                        Console.WriteLine($"Expired : {item.Expired}");
-                        Console.WriteLine($"Barcode : {item.Barcode}");
-                        Console.WriteLine("-----------------------------------");
+
+                    var temp = productraw.Read();
+                    if (temp.Any()) {
+                        foreach (Ingredients item in productraw.Read().ToArray()) {
+                            Console.WriteLine("-----------------------------------");
+                            Console.WriteLine($"ID : {item.Id}");
+                            Console.WriteLine($"Name : {item.Name}");
+                            Console.WriteLine($"Expired : {item.Expired}");
+                            Console.WriteLine($"Barcode : {item.Barcode}");
+                            Console.WriteLine("-----------------------------------");
+                        }
+                    } else {
+                        Console.WriteLine("Empty List");
+                    }
+                    Console.ReadKey();
+
+                } else if(selected == MenuAction.Selected) {
+                    int _id;
+                    Console.Clear();
+
+                    var temp = productraw.Read();
+                    if (temp.Any()) {
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); _id = Convert.ToInt32(Console.ReadLine());
+                        var select = productraw.Read(_id);
+                        if (select == null) {
+                            Console.Write("Data not found");
+                        } else {
+                            Console.WriteLine("-----------------------------------");
+                            Console.WriteLine($"ID : {select.Id}");
+                            Console.WriteLine($"Name : {select.Name}");
+                            Console.WriteLine($"Expired : {select.Expired}");
+                            Console.WriteLine($"Barcode : {select.Barcode}");
+                            Console.WriteLine("-----------------------------------");
+                        }
+                    } else {
+                        Console.WriteLine("Can't selected, its has been empty");
                     }
                     Console.ReadKey();
 
                 } else if (selected == MenuAction.Update) {
                     Console.Clear();
-                    Console.CursorVisible = true;
-                    Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
-                    Console.Write("Masukkan Nama: "); name = Console.ReadLine();
-                    Console.Write("Masukkan Expired: "); expired = Console.ReadLine();
-                    Console.Write("Masukkan Barcode: "); barcode = Console.ReadLine();
 
-                    ingredient = new Ingredients() {
-                        Id = id,
-                        Name = name,
-                        Barcode = barcode,
-                        Expired = expired,
-                    };
-                    productraw.Create(ingredient);
+                    var temp = productraw.Read();
+                    if (temp.Any()) {
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
+                        if(productraw.Read(id) == null) {
+                            Console.WriteLine("Data not found");
+                            Console.ReadKey();
+                        } else {
+                            Console.Write("Masukkan Nama: "); name = Console.ReadLine();
+                            Console.Write("Masukkan Expired: "); expired = Console.ReadLine();
+                            Console.Write("Masukkan Barcode: "); barcode = Console.ReadLine();
 
-                    productraw.Update(0, ingredient);
+                            ingredient = new Ingredients() {
+                                Id = id,
+                                Name = name,
+                                Barcode = barcode,
+                                Expired = expired,
+                            };
+
+                            productraw.Update(id, ingredient);
+                        }
+                    } else {
+                        Console.WriteLine("Can't Update, its has been empty");
+                        Console.ReadKey();
+                    }
 
                 } else if (selected == MenuAction.Delete) {
-                    Console.CursorVisible = true;
-                    Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
-                    productraw.Delete(id);
+                    Console.Clear();
+                    var temp = productraw.Read();
+                    if (temp.Any()) {
+                        Console.CursorVisible = true;
+                        Console.Write("Masukkan ID: "); id = Convert.ToInt32(Console.ReadLine());
+                        if(productraw.Read(id) != null) {
+                            productraw.Delete(id);
+                            Console.WriteLine("Remove success");
+                        } else {
+                            Console.WriteLine("Can't removed, Data not found");
+                        }
+                    } else {
+                        Console.WriteLine("Can't removed, its has been empty");
+                    }
+                    Console.ReadKey();
 
                 } else if (selected == MenuAction.Back) {
                     index = 0;
-                    //productraw.Dispose();
                     break;
                 }
             }
@@ -319,10 +520,10 @@ namespace UAS_Pemrograman{
     public enum MenuAction {
         Create,
         Read,
+        Selected,
         Update,
         Delete,
         Back,
-        Selected,
         Default,
     }
 }

@@ -62,7 +62,7 @@ namespace UAS_Pemrograman.Processes {
         public string Info() {
             var info = "List Product: ";
             foreach(var item in Read().ToArray()) {
-                info += $"{item.Name},";
+                info += $"{item.Name} [{item.Id}],";
             }
             return info.Remove(info.Length - 1);
         }

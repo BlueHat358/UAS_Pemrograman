@@ -15,7 +15,6 @@ namespace UAS_Pemrograman.Processes {
         }
 
         public override bool CreateDetail() {
-            Console.Write("Masukkan Qty: "); Model.Qty = Convert.ToInt32(Console.ReadLine());
             _list.Add(Model);
 
             return true;
@@ -34,7 +33,7 @@ namespace UAS_Pemrograman.Processes {
             var data = ReadDetail().Where(model => model.Id.Equals(id)).SingleOrDefault();
             if (data != null) {
                 _list.Remove(data);
-
+                _list.Add(Model);
                 return true;
             } else {
                 return false;
@@ -54,10 +53,17 @@ namespace UAS_Pemrograman.Processes {
 
         public override void Dispose() {
             _list = null;
+            ListOrders = null;
         }
 
         public new string Info() {
-            return "";
+            if (Model == null) return base.Info();
+
+            var info = "List Orders Detail: ";
+            foreach (var item in ReadDetail().ToArray()) {
+                info += $"{item.Product.Name} [{item.Product.Id}],";
+            }
+            return info.Remove(info.Length - 1);
         }
 
         public double SubTotal(int id) {
@@ -68,10 +74,6 @@ namespace UAS_Pemrograman.Processes {
             } else {
                 return 0;
             }
-        }
-
-        internal void Update(int v, object order) {
-            throw new NotImplementedException();
         }
     }
 }
