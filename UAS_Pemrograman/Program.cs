@@ -32,9 +32,9 @@ namespace UAS_Pemrograman{
                 var selected = MainMenu(menuitem);
                 if (selected == "[1].Orders Apply") {
                     DrawOrders();
-                } else if (selected == "[2].Menu List") {
+                } else if (selected == "[2].Product") {
                     DrawProduct();
-                } else if (selected == "[3].Base Product") {
+                } else if (selected == "[3].Raw Product") {
                     DrawProductRaw();
                 } else if (selected == "[4].Exit") {
                     orders.Dispose();
