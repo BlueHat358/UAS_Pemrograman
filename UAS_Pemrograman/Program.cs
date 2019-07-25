@@ -19,8 +19,8 @@ namespace UAS_Pemrograman{
             index = 0;
             var menuitem = new List<string>() {
                 "[1].Orders Apply",
-                "[2].Menu List",
-                "[3].Base Product",
+                "[2].Product",
+                "[3].Raw Product",
                 "[4].Exit",
             };
 
